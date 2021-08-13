@@ -1,4 +1,4 @@
-package com.example.springsecurityjwt.member;
+package com.example.springsecurityjwt.auth.userservice.member;
 
 import com.example.springsecurityjwt.auth.Authority;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "member")
 @Entity
-public class Member {
+public class MemberEntity {
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class Member {
     private Authority authority;
 
     @Builder
-    public Member(String email, String password, Authority authority) {
+    public MemberEntity(String email, String password, Authority authority) {
         this.email = email;
         this.password = password;
         this.authority = authority;

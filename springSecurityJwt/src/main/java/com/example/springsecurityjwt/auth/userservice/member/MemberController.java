@@ -1,7 +1,8 @@
-package com.example.springsecurityjwt.member;
+package com.example.springsecurityjwt.auth.userservice.member;
 
 import com.example.springsecurityjwt.auth.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,12 @@ public class MemberController {
 
     @GetMapping("/me")
     public ResponseEntity<MemberResponseDto> getMyMemberInfo() {
+        try{
+            memberService.getMyInfo();
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return ResponseEntity.ok(memberService.getMyInfo());
     }
 

@@ -1,5 +1,6 @@
-package com.example.springsecurityjwt.auth;
+package com.example.springsecurityjwt.auth.apigateway;
 
+import com.example.springsecurityjwt.auth.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

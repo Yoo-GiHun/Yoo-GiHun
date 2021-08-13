@@ -1,4 +1,4 @@
-package com.example.springsecurityjwt.member;
+package com.example.springsecurityjwt.auth.userservice.member;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,19 +12,19 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "refresh_token")
 @Entity
-public class RefreshToken {
+public class RefreshTokenEntity {
     @Id
-    private String key;
+    private String refreshKey;
     private String value;
 
-    public RefreshToken updateValue(String token) {
+    public RefreshTokenEntity updateValue(String token) {
         this.value = token;
         return this;
     }
 
     @Builder
-    public RefreshToken(String key, String value) {
-        this.key = key;
+    public RefreshTokenEntity(String refreshKey, String value) {
+        this.refreshKey = refreshKey;
         this.value = value;
     }
 }

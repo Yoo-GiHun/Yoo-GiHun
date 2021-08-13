@@ -1,13 +1,14 @@
-package com.example.springsecurityjwt.auth;
+package com.example.springsecurityjwt.auth.userservice;
 
 
+import com.example.springsecurityjwt.auth.TokenProvider;
 import com.example.springsecurityjwt.auth.dto.MemberRequestDto;
 import com.example.springsecurityjwt.auth.dto.MemberResponseDto;
 import com.example.springsecurityjwt.auth.dto.TokenDto;
 import com.example.springsecurityjwt.auth.dto.TokenRequestDto;
-import com.example.springsecurityjwt.member.Member;
-import com.example.springsecurityjwt.member.MemberRepository;
-import com.example.springsecurityjwt.member.RefreshToken;
+import com.example.springsecurityjwt.auth.userservice.member.MemberEntity;
+import com.example.springsecurityjwt.auth.userservice.member.MemberRepository;
+import com.example.springsecurityjwt.auth.userservice.member.RefreshTokenEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,13 +32,13 @@ public class AuthService {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
 
-        Member member = memberRequestDto.toMember(passwordEncoder);
-        return MemberResponseDto.of(memberRepository.save(member));
+        MemberEntity memberEntity = memberRequestDto.toMember(passwordEncoder);
+        return MemberResponseDto.of(memberRepository.save(memberEntity));
     }
 
     @Transactional
     public TokenDto login(MemberRequestDto memberRequestDto) {
-        // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
+        // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성(인증 정보를 가진 객체)
         UsernamePasswordAuthenticationToken authenticationToken = memberRequestDto.toAuthentication();
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
@@ -48,12 +49,12 @@ public class AuthService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         // 4. RefreshToken 저장
-        RefreshToken refreshToken = RefreshToken.builder()
-                .key(authentication.getName())
+        RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
+                .refreshKey(authentication.getName())
                 .value(tokenDto.getRefreshToken())
                 .build();
 
-        refreshTokenRepository.save(refreshToken);
+        refreshTokenRepository.save(refreshTokenEntity);
 
         // 5. 토큰 발급
         return tokenDto;
@@ -70,11 +71,11 @@ public class AuthService {
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
 
         // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
-        RefreshToken refreshToken = refreshTokenRepository.findByKey(authentication.getName())
+        RefreshTokenEntity refreshTokenEntity = refreshTokenRepository.findByRefreshKey(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
         // 4. Refresh Token 일치하는지 검사
-        if (!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())) {
+        if (!refreshTokenEntity.getValue().equals(tokenRequestDto.getRefreshToken())) {
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
         }
 
@@ -82,8 +83,8 @@ public class AuthService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         // 6. 저장소 정보 업데이트
-        RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
-        refreshTokenRepository.save(newRefreshToken);
+        RefreshTokenEntity newRefreshTokenEntity = refreshTokenEntity.updateValue(tokenDto.getRefreshToken());
+        refreshTokenRepository.save(newRefreshTokenEntity);
 
         // 토큰 발급
         return tokenDto;

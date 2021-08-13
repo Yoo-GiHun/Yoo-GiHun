@@ -1,21 +1,21 @@
 package com.example.springsecurityjwt.auth.dto;
 
 import com.example.springsecurityjwt.auth.Authority;
-import com.example.springsecurityjwt.member.Member;
+import com.example.springsecurityjwt.auth.userservice.member.MemberEntity;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberRequestDto {
     private String email;
     private String password;
 
-    public Member toMember(PasswordEncoder passwordEncoder) {
-        return Member.builder()
+    public MemberEntity toMember(PasswordEncoder passwordEncoder) {
+        return MemberEntity.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .authority(Authority.ROLE_USER)

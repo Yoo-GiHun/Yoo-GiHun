@@ -4,6 +4,7 @@ import com.example.springsecurityjwt.auth.dto.MemberRequestDto;
 import com.example.springsecurityjwt.auth.dto.MemberResponseDto;
 import com.example.springsecurityjwt.auth.dto.TokenDto;
 import com.example.springsecurityjwt.auth.dto.TokenRequestDto;
+import com.example.springsecurityjwt.auth.userservice.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,6 @@
 package com.example.springsecurityjwt.auth.dto;
 
-import com.example.springsecurityjwt.member.Member;
+import com.example.springsecurityjwt.auth.userservice.member.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class MemberResponseDto {
     private String email;
 
-    public static MemberResponseDto of(Member member) {
-        return new MemberResponseDto(member.getEmail());
+    public static MemberResponseDto of(MemberEntity memberEntity) {
+        return new MemberResponseDto(memberEntity.getEmail());
     }
 }

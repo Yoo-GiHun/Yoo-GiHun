@@ -1,8 +1,7 @@
-package com.example.springsecurityjwt.member;
+package com.example.springsecurityjwt.auth.userservice.member;
 
 import com.example.springsecurityjwt.auth.SecurityUtil;
 import com.example.springsecurityjwt.auth.dto.MemberResponseDto;
-import com.example.springsecurityjwt.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;

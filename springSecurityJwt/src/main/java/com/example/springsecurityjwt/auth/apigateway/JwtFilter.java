@@ -1,5 +1,6 @@
-package com.example.springsecurityjwt.auth;
+package com.example.springsecurityjwt.auth.apigateway;
 
+import com.example.springsecurityjwt.auth.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
